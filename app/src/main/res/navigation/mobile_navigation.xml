@@ -9,17 +9,17 @@
         android:id="@+id/navigation_home"
         android:name="com.university.healthapp.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/measurement" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.university.healthapp.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/measurement_lists" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.university.healthapp.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/food" />
 </navigation>

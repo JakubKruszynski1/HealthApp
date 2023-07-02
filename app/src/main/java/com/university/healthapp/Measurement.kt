@@ -2,10 +2,10 @@ package com.university.healthapp
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,27 +14,24 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.university.healthapp.databinding.ActivityMainBinding
 import com.university.healthapp.databinding.MeasurementBinding
-import kotlin.concurrent.thread
+import java.text.NumberFormat
+
+class Measurement : AppCompatActivity() {
 
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-
-    private lateinit var measurementBinding: MeasurementBinding
-
-    private var nav : Boolean = false
+    private lateinit var binding: MeasurementBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        measurementBinding = MeasurementBinding.inflate(layoutInflater)
 
-        println("START ActivityMainBinding")
+
+        println("START MEASUREMENT")
+        binding = MeasurementBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
@@ -45,58 +42,52 @@ class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
 
-        measurementBinding.calculateButton.setOnClickListener { calculateTip() }
 
-        measurementBinding.calculateButton1.setOnClickListener{ changeView()}
+        setContentView(binding.root)
+
+        binding.calculateButton.setOnClickListener { calculateTip() }
 
         // Set up a key listener on the EditText field to listen for "enter" button presses
-        measurementBinding.costOfServiceEditText.setOnKeyListener { view, keyCode, _ ->
+        binding.costOfServiceEditText.setOnKeyListener { view, keyCode, _ ->
             handleKeyEvent(
                 view,
                 keyCode
             )
         }
-        setContentView(measurementBinding.root)
+        setContentView(binding.root)
+        // Setup a click listener on the calculate button to calculate the tip
+
     }
 
-
-    private fun changeView() {
-        if(nav === false){
-            setContentView(binding.root)
-        }
-        else{
-            setContentView(measurementBinding.root)
-        }
-    }
 
     private fun calculateTip() {
 
-        println(measurementBinding.costOfServiceEditText.text.toString())
-        println(measurementBinding.costOfServiceEditText1.text.toString())
-        println(measurementBinding.tipOptions.checkedRadioButtonId-2131231060)
-        println(measurementBinding.roundUpSwitch.isChecked)
+        println(binding.costOfServiceEditText.text.toString())
+        println(binding.costOfServiceEditText1.text.toString())
+        println(binding.tipOptions.checkedRadioButtonId-2131231060)
+        println(binding.roundUpSwitch.isChecked)
 
         val dietType : DietType
 
-        if(measurementBinding.costOfServiceEditText.text.toString().toInt() > 80
-            || measurementBinding.costOfServiceEditText1.text.toString().toInt() > 120)
+        if(binding.costOfServiceEditText.text.toString().toInt() > 80
+            || binding.costOfServiceEditText1.text.toString().toInt() > 120)
             dietType = DietType.EXTRA_HEALTHY
-        else if (measurementBinding.costOfServiceEditText.text.toString().toInt() < 80 &&
-            measurementBinding.costOfServiceEditText1.text.toString().toInt() < 120 &&
-            measurementBinding.tipOptions.checkedRadioButtonId-2131231060 == 0)
+        else if (binding.costOfServiceEditText.text.toString().toInt() < 80 &&
+            binding.costOfServiceEditText1.text.toString().toInt() < 120 &&
+            binding.tipOptions.checkedRadioButtonId-2131231060 == 0)
             dietType = DietType.HEALTHY
         else
             dietType = DietType.NORMAL
 
         displayTip(dietType)
+
     }
 
 
 
     private fun displayTip(dietType: DietType) {
-        measurementBinding.tipResult.text = "Diet type is: " + dietType.toString()
+        binding.tipResult.text = "Diet type is: " + dietType.toString()
     }
 
     private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
@@ -109,5 +100,4 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
-
 }
