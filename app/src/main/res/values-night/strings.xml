@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- App name -->
+    <string name="app_name">Tip Time</string>
+
+    <!-- Hint text for editable text field where the user enters the cost of service -->
+    <string name="cost_of_service">Weight</string>
+    <string name="amazing_service">amazing service</string>
+
+    <!-- Question prompt for the group of radio buttons with different tip options -->
+</resources>
