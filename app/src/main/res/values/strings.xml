@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">HealthApp</string>
     <string name="title_home">Measurement</string>
-    <string name="title_dashboard">Drink</string>
-    <string name="title_notifications">Food</string>
+    <string name="title_dashboard">List of dishes</string>
+    <string name="title_notifications">List of measurements</string>
     <string name="cost_of_service">Weight</string>
     <string name="how_was_the_service">How do you fell?\n\n</string>
     <string name="amazing_service">good</string>

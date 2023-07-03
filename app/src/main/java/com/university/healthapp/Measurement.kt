@@ -2,7 +2,6 @@ package com.university.healthapp
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -10,11 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.university.healthapp.databinding.ActivityMainBinding
 import com.university.healthapp.databinding.MeasurementBinding
-import java.text.NumberFormat
+import org.springframework.web.client.RestTemplate
+
 
 class Measurement : AppCompatActivity() {
 
@@ -63,10 +60,13 @@ class Measurement : AppCompatActivity() {
 
     private fun calculateTip() {
 
-        println(binding.costOfServiceEditText.text.toString())
-        println(binding.costOfServiceEditText1.text.toString())
-        println(binding.tipOptions.checkedRadioButtonId-2131231060)
-        println(binding.roundUpSwitch.isChecked)
+        var weight = binding.costOfServiceEditText.text.toString();
+        var pressure = binding.costOfServiceEditText1.text.toString();
+        var status = binding.tipOptions.checkedRadioButtonId-2131231060;
+        var woman = binding.roundUpSwitch.isChecked;
+
+
+
 
         val dietType : DietType
 
@@ -80,6 +80,7 @@ class Measurement : AppCompatActivity() {
         else
             dietType = DietType.NORMAL
 
+        // save data
         displayTip(dietType)
 
     }
