@@ -25,7 +25,6 @@ import org.springframework.web.client.RestTemplate
 // GŁÓWNA KLASA W KOTLINIE
 class MainActivity : AppCompatActivity() {
 
-
     // ZMIENNE POMOCNICZE
 
     private lateinit var binding: ActivityMainBinding
@@ -33,8 +32,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var measurementBinding: MeasurementBinding
 
     private var nav : Boolean = false
-
-
 
     // OBSŁUGA LOGIKI APLIKACJI
     // POŁĄCZENIE WIDOKÓW Z KLASAMI W KOTLINIE
@@ -52,8 +49,6 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
@@ -62,8 +57,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        measurementBinding.calculateButton.setOnClickListener { calculateTip() }
 
+        // OBSŁUGA PRZYCISKÓW W APLIKACJI
+        measurementBinding.calculateButton.setOnClickListener { calculateTip() }
         measurementBinding.calculateButton1.setOnClickListener{ changeView()}
 
         // Set up a key listener on the EditText field to listen for "enter" button presses
@@ -74,8 +70,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
         setContentView(measurementBinding.root)
-
-
     }
 
 
@@ -88,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             setContentView(measurementBinding.root)
         }
     }
-
 
     // OBLICZENIE TYPU DIETY JAKA POWINNA BYC
     private fun calculateTip() {
@@ -108,6 +101,14 @@ class MainActivity : AppCompatActivity() {
         saveData(dietType)
     }
 
+
+
+    // POBRANIE DANYCH DO API
+    private fun getData(){
+        val restTemplate = RestTemplate()
+        restTemplate.getForObject("https://app1.takemewith.pl/clients",MeasurementData::class.java);
+        println("DANE ZOSTAŁY POBRANE")
+    }
 
     // ZAPIS DANYCH DO API
     private fun saveData(dietType: DietType){
@@ -140,7 +141,6 @@ class MainActivity : AppCompatActivity() {
     private fun displayTip(dietType: DietType) {
         measurementBinding.tipResult.text = "Diet type is: " + dietType.toString()
     }
-
 
     // OBSŁUGA KLAWIATURY
     private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
