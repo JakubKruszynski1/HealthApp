@@ -1,26 +1,28 @@
 package com.university.healthapp
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.university.healthapp.databinding.ActivityMainBinding
 import com.university.healthapp.databinding.MeasurementBinding
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
+
 
 // GŁÓWNA KLASA W KOTLINIE
 class MainActivity : AppCompatActivity() {
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     // OBSŁUGA LOGIKI APLIKACJI
     // POŁĄCZENIE WIDOKÓW Z KLASAMI W KOTLINIE
+    // FUNKCJA KTÓRA JEST URUCHAMIANA NA STARCIE URUCHAMIANIA PROGRAMU
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -105,8 +108,22 @@ class MainActivity : AppCompatActivity() {
 
     // POBRANIE DANYCH DO API
     private fun getData(){
+        // WYŁĄCZENIE ZABEZPIECZEŃ
+        val policy = ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
+        val objectMapper = ObjectMapper()
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+
+
         val restTemplate = RestTemplate()
-        restTemplate.getForObject("https://app1.takemewith.pl/clients",MeasurementData::class.java);
+        val rest: ResponseEntity<String> = restTemplate.exchange<String>(
+            "https://app1.takemewith.pl/clients",
+            HttpMethod.GET,
+            HttpEntity<Any?>(headers),
+            String::class.java
+        )
         println("DANE ZOSTAŁY POBRANE")
     }
 
@@ -120,6 +137,7 @@ class MainActivity : AppCompatActivity() {
 
         // save data
         val restTemplate = RestTemplate()
+
         var measurement = MeasurementData(weight,pressure,dietType.toString(),woman)
         print("API CALL")
         print(measurement.weight)
@@ -128,11 +146,20 @@ class MainActivity : AppCompatActivity() {
         print(measurement.woman)
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
+        val objectMapper = ObjectMapper()
+
+        // WYŁĄCZENIE ZABEZPIECZEŃ
+        val policy = ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
 
         // WYWOŁANIE ZEWNĘTRZNEGO API I ZAPIS DO BAZY DANYCH
-        val entity = HttpEntity<MeasurementData>(measurement, headers)
-//        restTemplate.put("https://app1.takemewith.pl/client", entity)
+        val rest: ResponseEntity<String> = restTemplate.exchange<String>(
+            "https://app1.takemewith.pl/client",
+            HttpMethod.POST,
+            HttpEntity<Any?>(objectMapper.writeValueAsString(measurement), headers),
+            String::class.java
+        )
 
         print("DATA ADDED")
     }
