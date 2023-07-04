@@ -34,9 +34,11 @@ class NotificationsFragment : Fragment() {
         val notificationsViewModel =
             ViewModelProvider(this).get(NotificationsViewModel::class.java)
 
+        // POŁĄCZENIE KLASY Z WIDOKIEM
         _binding = ListOfMeasurementsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // ZAPYTANIE DO API
         print("GET DATA")
         getData();
 
@@ -57,7 +59,7 @@ class NotificationsFragment : Fragment() {
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
 
-
+        // POBRANIE DANYCH O POMIARACH
         val restTemplate = RestTemplate()
         val rest: ResponseEntity<String> = restTemplate.exchange<String>(
             "https://app1.takemewith.pl/clients",

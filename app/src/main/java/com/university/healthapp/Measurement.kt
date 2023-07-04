@@ -13,6 +13,8 @@ import com.university.healthapp.databinding.MeasurementBinding
 import org.springframework.web.client.RestTemplate
 
 
+
+// KLASA REPREZENTUJĄCA POMIAR
 class Measurement : AppCompatActivity() {
 
 
